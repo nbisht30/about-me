@@ -1,18 +1,14 @@
 const body = document.body
-const btnTheme = document.getElementById('btn-theme-icon')
+const btnThemeLabel = document.getElementById('btn-theme-label')
 const btnThemeToggle = document.getElementById('btn-theme-toggle')
 const btnHamburger = document.querySelector('.nav__hamburger i')
 const storedTheme = localStorage.getItem('portfolio-theme')
-const themeIconPaths = {
-	light: './assets/theme-toggle-light-transparent.png',
-	dark: './assets/theme-toggle-dark-transparent.png',
-}
 
 const setTheme = (themeName) => {
 	body.classList.remove('light', 'dark')
 	body.classList.add(themeName)
-	btnTheme.src = themeIconPaths[themeName]
-	btnTheme.alt = themeName === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+	btnThemeLabel.textContent = themeName === 'dark' ? 'light mode' : 'dark mode'
+	btnThemeToggle.setAttribute('aria-label', `switch to ${themeName === 'dark' ? 'light' : 'dark'} mode`)
 	localStorage.setItem('portfolio-theme', themeName)
 }
 

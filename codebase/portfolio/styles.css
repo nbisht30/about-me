@@ -211,25 +211,23 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 4rem;
+  min-width: 6.2rem;
   height: 2rem;
-  padding: 0;
-  border: 0;
+  padding: 0 0.8rem;
+  border: 1px solid var(--surface-border);
   border-radius: 999px;
-  background: transparent;
-}
-
-.theme-toggle img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  border-radius: 999px;
+  background: var(--clr-bg-alt);
+  color: var(--clr-fg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
 }
 
 .theme-toggle:hover,
 .theme-toggle:focus {
   color: var(--clr-primary);
+  border-color: var(--clr-primary);
 }
 
 /*========
