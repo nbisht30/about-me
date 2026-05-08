@@ -46,7 +46,7 @@
       }
     </script>
   </head>
-  <body class="dark" id="top">
+  <body class="light" id="top">
     <header class="header center">
       <h3>
         HI THERE.
@@ -65,8 +65,18 @@
           </li>
         </ul>
 
-        <button type="button" aria-label="toggle theme" class="btn btn--icon">
-          <i aria-hidden="true" id="btn-theme" class="fas fa-moon"></i>
+        <button
+          type="button"
+          id="btn-theme-toggle"
+          aria-label="toggle theme"
+          title="Toggle theme"
+          class="btn theme-toggle"
+        >
+          <img
+            id="btn-theme-icon"
+            src="./assets/theme-toggle-light.png"
+            alt="Theme toggle"
+          />
         </button>
 
         <button

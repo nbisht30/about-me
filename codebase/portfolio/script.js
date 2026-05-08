@@ -1,22 +1,25 @@
 const body = document.body
-const getBodyTheme = localStorage.getItem('portfolio-theme')
-const getBtnTheme = localStorage.getItem('portfolio-btn-theme')
-const btnTheme = document.querySelector('.fa-moon')
-const btnHamburger = document.querySelector('.fa-bars')
-
-const isDark = () => body.classList.contains('dark')
-
-const setTheme = (bodyClass, buttonClass) => {
-	body.classList.remove(localStorage.getItem('portfolio-theme'))
-	btnTheme.classList.remove(localStorage.getItem('portfolio-btn-theme'))
-	body.classList.add(bodyClass)
-	btnTheme.classList.add(buttonClass)
-	localStorage.setItem('portfolio-theme', bodyClass)
-	localStorage.setItem('portfolio-btn-theme', buttonClass)
+const btnTheme = document.getElementById('btn-theme-icon')
+const btnThemeToggle = document.getElementById('btn-theme-toggle')
+const btnHamburger = document.querySelector('.nav__hamburger i')
+const storedTheme = localStorage.getItem('portfolio-theme')
+const themeIconPaths = {
+	light: './assets/theme-toggle-light-transparent.png',
+	dark: './assets/theme-toggle-dark-transparent.png',
 }
 
-const toggleTheme = () =>
-	isDark() ? setTheme('light', 'fa-moon') : setTheme('dark', 'fa-sun')
+const setTheme = (themeName) => {
+	body.classList.remove('light', 'dark')
+	body.classList.add(themeName)
+	btnTheme.src = themeIconPaths[themeName]
+	btnTheme.alt = themeName === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+	localStorage.setItem('portfolio-theme', themeName)
+}
+
+const toggleTheme = () => {
+	const nextTheme = body.classList.contains('dark') ? 'light' : 'dark'
+	setTheme(nextTheme)
+}
 
 const displayList = () => {
 	const navUl = document.querySelector('.nav__list')
@@ -44,12 +47,8 @@ const scrollUp = () => {
 	}
 };
 
-btnTheme.addEventListener('click', toggleTheme)
+btnThemeToggle.addEventListener('click', toggleTheme)
 btnHamburger.addEventListener('click', displayList)
 document.addEventListener('scroll', scrollUp)
 
-const setBodyTheme = () => body.classList.add(getBodyTheme)
-const setBtnTheme = () => btnTheme.classList.add(getBtnTheme)
-
-setBodyTheme()
-setBtnTheme()
+setTheme(storedTheme === 'dark' ? 'dark' : 'light')
