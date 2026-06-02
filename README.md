@@ -10,28 +10,29 @@ Static personal portfolio website built with plain HTML, CSS, and JavaScript.
 
 ## Project Structure
 
-- `codebase/portfolio/index.html` - Main page content and SEO metadata
-- `codebase/portfolio/styles.css` - Styling and theme design
-- `codebase/portfolio/script.js` - Theme toggle, mobile nav, scroll-to-top behavior
-- `codebase/portfolio/robots.txt` - Search engine crawl rules
-- `codebase/portfolio/sitemap.xml` - Sitemap for indexing
+- `index.html` - Root redirect for branch-based GitHub Pages hosting
+- `portfolio/index.html` - Main page content and SEO metadata
+- `portfolio/styles.css` - Styling and theme design
+- `portfolio/script.js` - Theme toggle, mobile nav, scroll-to-top behavior
+- `portfolio/robots.txt` - Search engine crawl rules
+- `portfolio/sitemap.xml` - Sitemap for indexing
 
 ## Run Locally
 
 This is a static site, so no build step is required.
 
 Option 1:
-- Open `codebase/portfolio/index.html` directly in your browser.
+- Open `portfolio/index.html` directly in your browser.
 
 Option 2 (recommended for local testing):
 - Start a simple HTTP server from project root:
   - `python3 -m http.server 8000`
 - Open:
-  - `http://localhost:8000/codebase/portfolio/`
+  - `http://localhost:8000/portfolio/`
 
 ## Deployment
 
-Deploy the contents of `codebase/portfolio` to any static hosting provider:
+Deploy the contents of `portfolio` to any static hosting provider:
 
 - Cloudflare Pages
 - GitHub Pages
@@ -41,9 +42,87 @@ Deploy the contents of `codebase/portfolio` to any static hosting provider:
 
 Make sure your custom domain points correctly and HTTPS is enabled.
 
+## GitHub Pages Setup
+
+GitHub Pages was showing the README because the repository root did not have an `index.html`.
+This repo now includes a root `index.html` that redirects to `portfolio/`, so branch-based GitHub Pages works without changing the Cloudflare setup.
+
+### Simple setup: deploy from branch
+
+Use this if you want the least setup.
+
+1. Go to **GitHub repo -> Settings -> Pages**.
+2. Under **Build and deployment**, set:
+   - **Source**: `Deploy from a branch`
+   - **Branch**: `master` or `main`
+   - **Folder**: `/ (root)`
+3. Save the settings.
+4. Push changes to the selected branch.
+
+Your GitHub Pages site should then open from:
+
+- `https://nbisht30.github.io/`
+
+This mode redirects from the root page to:
+
+- `https://nbisht30.github.io/portfolio/`
+
+### Cleaner setup: publish `portfolio` as the site root
+
+Use this if you want `https://nbisht30.github.io/` to serve the portfolio directly without a redirect.
+
+1. Go to **GitHub repo -> Settings -> Pages**.
+2. Under **Build and deployment**, set:
+   - **Source**: `GitHub Actions`
+3. Add a GitHub Actions workflow that uploads `portfolio` as the Pages artifact.
+
+Example workflow:
+
+```yaml
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: portfolio
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
 ## Cloudflare Pages Setup
 
-This project is deployed as a static site from `codebase/portfolio`.
+This project is deployed as a static site from `portfolio`.
 
 ### One-time setup
 
@@ -53,7 +132,7 @@ This project is deployed as a static site from `codebase/portfolio`.
    - **Framework preset**: `None`
    - **Production branch**: `master` (or `main`, whichever your repo uses)
    - **Build command**: leave empty (or set `echo "no build"`)
-   - **Build output directory**: `codebase/portfolio`
+   - **Build output directory**: `portfolio`
 4. Save and deploy.
 
 Note: do not use `npx wrangler deploy` for this static Pages setup.
@@ -101,7 +180,7 @@ it means Worker deploy flow was used instead of Pages static deploy.
 
 Fix by using the Pages build settings above, or deploy the static directory explicitly:
 
-- `npx wrangler pages deploy codebase/portfolio --project-name <your-pages-project-name>`
+- `npx wrangler pages deploy portfolio --project-name <your-pages-project-name>`
 
 ## SEO
 
